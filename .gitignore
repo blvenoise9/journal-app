@@ -1,0 +1,5 @@
+node_modules/
+client/build/
+server/uploads/
+.env
+.DS_Store 
