@@ -51,7 +51,10 @@ export const EntryDetail: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), 'EEEE, MMMM d, yyyy');
+      // Parse the date string manually to avoid timezone issues
+      const [year, month, day] = dateString.split('-').map(Number);
+      const date = new Date(year, month - 1, day); // month is 0-indexed
+      return format(date, 'EEEE, MMMM d, yyyy');
     } catch {
       return dateString;
     }

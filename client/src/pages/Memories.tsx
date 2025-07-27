@@ -22,6 +22,7 @@ export const Memories: React.FC = () => {
         journalAPI.getAllEntries(),
         journalAPI.getMemories()
       ]);
+      
       setAllEntries(entries);
       setMemoriesEntries(memories);
     } catch (error) {
@@ -33,7 +34,9 @@ export const Memories: React.FC = () => {
 
   const getEntriesForDate = (date: Date): JournalEntry[] => {
     const dateString = format(date, 'yyyy-MM-dd');
-    return allEntries.filter(entry => entry.date === dateString);
+    const entries = allEntries.filter(entry => entry.date === dateString);
+    
+    return entries;
   };
 
   const generateCalendarDays = (): (Date | null)[] => {

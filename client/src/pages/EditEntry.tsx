@@ -79,107 +79,118 @@ export const EditEntry: React.FC = () => {
 
   if (loadingEntry) {
     return (
-      <div className="flex items-center justify-center min-h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
 
   if (!entry) {
     return (
-      <div className="text-center py-12">
-        <div className="text-red-600 mb-4">Entry not found</div>
-        <button
-          onClick={() => navigate('/')}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Back to Home
-        </button>
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-400 mb-4">Entry not found</div>
+          <button
+            onClick={() => navigate('/')}
+            className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="bg-black text-white min-h-screen pb-20">
       {/* Header */}
-      <div className="flex items-center space-x-4">
-        <button
-          onClick={() => navigate(`/entry/${id}`)}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <h1 className="text-2xl font-bold text-gray-900">Edit Journal Entry</h1>
+      <div className="px-4 py-6 border-b border-gray-800">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => navigate(`/entry/${id}`)}
+            className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back</span>
+          </button>
+          <div className="text-center">
+            <h1 className="text-lg font-medium text-white">Edit Entry</h1>
+            <p className="text-sm text-gray-400">Update your thoughts</p>
+          </div>
+          <div className="w-16"></div>
+        </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-xl shadow-soft p-6 space-y-6">
-          {/* Title */}
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-              Title (optional)
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Give your entry a title..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="px-4 py-6 space-y-6">
+        {/* Title Input */}
+        <div>
+          <label className="block text-sm font-medium text-gray-400 mb-2">
+            Title (optional)
+          </label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Give your entry a title..."
+            className="w-full text-lg font-medium placeholder-gray-500 bg-transparent border-none outline-none text-white"
+          />
+        </div>
 
-          {/* Image Upload */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Photo (optional)
-            </label>
-            <ImageUpload 
-              onImageSelect={handleImageSelect} 
-              currentImage={currentImageUrl}
-            />
-          </div>
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-400 mb-2">
+            Photo (optional)
+          </label>
+          <ImageUpload 
+            onImageSelect={handleImageSelect} 
+            currentImage={currentImageUrl}
+          />
+        </div>
 
-          {/* Content */}
-          <div>
-            <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-              Content *
-            </label>
-            <textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="What's on your mind today?"
-              rows={8}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-vertical"
-              required
-            />
-          </div>
+        {/* Content Input */}
+        <div>
+          <label className="block text-sm font-medium text-gray-400 mb-2">
+            Content *
+          </label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="What's on your mind today?"
+            rows={10}
+            className="w-full text-white placeholder-gray-500 bg-transparent border-none outline-none resize-none leading-relaxed"
+            required
+          />
+        </div>
 
-          {/* Error */}
-          {error && (
-            <div className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">
-              {error}
+        {/* Error */}
+        {error && (
+          <div className="bg-red-900/50 border border-red-500 rounded-lg p-3 text-red-400 text-sm">
+            {error}
+          </div>
+        )}
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-4">
+          <button
+            type="button"
+            onClick={() => navigate(`/entry/${id}`)}
+            className="px-4 py-2 text-gray-400 hover:text-white font-medium transition-colors"
+          >
+            Cancel
+          </button>
+          
+          <div className="flex items-center space-x-3">
+            <div className="text-sm text-gray-500">
+              {content.length} characters
             </div>
-          )}
-
-          {/* Actions */}
-          <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
-            <button
-              type="button"
-              onClick={() => navigate(`/entry/${id}`)}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
-            >
-              Cancel
-            </button>
             <button
               type="submit"
               disabled={loading || !content.trim()}
-              className="inline-flex items-center space-x-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="inline-flex items-center space-x-2 px-6 py-2 bg-white text-black rounded-full hover:bg-gray-200 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-black border-t-transparent"></div>
               ) : (
                 <Save className="w-4 h-4" />
               )}

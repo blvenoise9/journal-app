@@ -30,7 +30,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), 'MMM d, yyyy');
+      // Parse the date string manually to avoid timezone issues
+      const [year, month, day] = dateString.split('-').map(Number);
+      const date = new Date(year, month - 1, day); // month is 0-indexed
+      return format(date, 'MMM d, yyyy');
     } catch {
       return dateString;
     }

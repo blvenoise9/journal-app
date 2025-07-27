@@ -19,7 +19,6 @@ export const Home: React.FC = () => {
     try {
       setLoading(true);
       const data = await journalAPI.getAllEntries();
-      console.log('Loaded entries:', data);
       setEntries(data);
     } catch (err) {
       setError('Failed to load entries. Please try again.');
@@ -115,7 +114,6 @@ export const Home: React.FC = () => {
                 return entry.date !== today;
               })
               .map((entry) => {
-                console.log('Rendering entry:', entry);
                 return (
                   <EntryCard
                     key={entry.uuid}
