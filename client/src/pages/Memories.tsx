@@ -9,6 +9,7 @@ export const Memories: React.FC = () => {
   const [memoriesEntries, setMemoriesEntries] = useState<JournalEntry[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
+  const [selectedDateEntries, setSelectedDateEntries] = useState<JournalEntry[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -72,7 +73,13 @@ export const Memories: React.FC = () => {
 
   const openEntryModal = (entry: JournalEntry) => {
     setSelectedEntry(entry);
+    setSelectedDateEntries([]);
     setCurrentImageIndex(0); // Reset to first image
+  };
+
+  const openDateEntriesModal = (entries: JournalEntry[]) => {
+    setSelectedDateEntries(entries);
+    setSelectedEntry(null);
   };
 
   const nextImage = () => {
@@ -198,7 +205,7 @@ export const Memories: React.FC = () => {
             return (
               <div key={index} className="relative">
                 <button
-                  onClick={() => dayEntries.length > 0 && openEntryModal(dayEntries[0])}
+                  onClick={() => dayEntries.length > 0 && openDateEntriesModal(dayEntries)}
                   className={`w-full aspect-square p-1 rounded-lg transition-colors ${
                     isToday 
                       ? 'bg-white text-black' 
@@ -321,6 +328,73 @@ export const Memories: React.FC = () => {
               <button
                 onClick={() => setSelectedEntry(null)}
                 className="w-full mt-4 py-2 bg-white text-black rounded-lg font-medium"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Date Entries Modal */}
+      {selectedDateEntries.length > 0 && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 rounded-2xl max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-800">
+              <h3 className="text-xl font-bold text-center">
+                Entries for {(() => {
+                  const [year, month, day] = selectedDateEntries[0].date.split('-').map(Number);
+                  const date = new Date(year, month - 1, day);
+                  return format(date, 'MMM d, yyyy');
+                })()}
+              </h3>
+            </div>
+            <div className="p-4">
+              {selectedDateEntries.map((entry) => {
+                const imageUrls = journalAPI.getImageUrls(entry);
+                return (
+                  <div key={entry.uuid} className="mb-4 last:mb-0">
+                    <button
+                      onClick={() => openEntryModal(entry)}
+                      className="flex items-center justify-between p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 mr-3 rounded-lg overflow-hidden bg-gray-700 flex items-center justify-center">
+                          {imageUrls.length > 0 ? (
+                            <img
+                              src={imageUrls[0]}
+                              alt="Entry"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <h4 className="text-white font-medium text-left">
+                            {entry.title || entry.content.slice(0, 30) + (entry.content.length > 30 ? '...' : '')}
+                          </h4>
+                          <p className="text-gray-400 text-sm">{entry.time}</p>
+                        </div>
+                      </div>
+                      <div className="text-gray-400 text-sm">
+                        {(() => {
+                          const [year, month, day] = entry.date.split('-').map(Number);
+                          const date = new Date(year, month - 1, day);
+                          return format(date, 'MMM d, yyyy');
+                        })()}
+                      </div>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="p-4 border-t border-gray-800">
+              <button
+                onClick={() => setSelectedDateEntries([])}
+                className="w-full py-2 bg-white text-black rounded-lg font-medium"
               >
                 Close
               </button>

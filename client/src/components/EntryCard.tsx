@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Edit3, Trash2, Heart, MessageCircle } from 'lucide-react';
+import { Edit3, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { JournalEntry } from '../types/index.ts';
 import { journalAPI } from '../services/api.ts';
@@ -152,25 +152,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 
           {/* Actions */}
           {showActions && (
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-800">
-              <div className="flex items-center space-x-4">
-                <button 
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                  className="flex items-center space-x-1 text-gray-500 hover:text-white transition-colors"
-                >
-                  <Heart className="w-4 h-4" />
-                  <span className="text-xs">0</span>
-                </button>
-                
-                <button 
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                  className="flex items-center space-x-1 text-gray-500 hover:text-white transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span className="text-xs">0</span>
-                </button>
-              </div>
-
+            <div className="flex items-center justify-end mt-3 pt-3 border-t border-gray-800">
               <div className="flex items-center space-x-1">
                 <Link
                   to={`/edit/${entry.uuid}`}
