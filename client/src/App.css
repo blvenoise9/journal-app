@@ -5,6 +5,14 @@
 /* Import Jersey 15 font explicitly */
 @import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 
+/* iOS Safe Area Support */
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+  --safe-area-inset-right: env(safe-area-inset-right);
+}
+
 /* Global styles */
 * {
   margin: 0;
@@ -18,7 +26,11 @@ body {
   color: #1f2937;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Add padding for iOS safe areas */
+  padding-top: var(--safe-area-inset-top);
+  padding-bottom: var(--safe-area-inset-bottom);
+  padding-left: var(--safe-area-inset-left);
+  padding-right: var(--safe-area-inset-right);
 }
 
 /* Jersey 15 font class */
